@@ -25,7 +25,6 @@ for derivative in derivatives:
     for pipeline in pipelines:
         for strategy in strategies:
 
-
             #THIS MAKES SURE THAT DATA IS THERE, IF NOT, RUNS CORRESPONDING THE GROUP ANALYSIS SCRIPT
             if not os.path.exists('stats_%s_%s_%s' %(pipeline, strategy, derivative)):
                 group_analysis.do_it(pipeline, strategy, derivative)
@@ -80,8 +79,8 @@ for derivative in derivatives:
                             else:
                                 die = 2.*s.sum()/xplusy
                             print die
-                            dice[str(threshold)]=die
-                        dices[pipeline+'_'+strategy+'_V_'+pipeline2+'_'+strategy2] = dice
+                            dice[str(percent)+'_'+str(threshold)] = die
+                        dices[pipeline+'_'+strategy+'_V_'+pipeline2+'_'+strategy2] = dice.values
 
                         #entropy
                         x = ee.vectorize(X)

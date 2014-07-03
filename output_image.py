@@ -22,6 +22,17 @@ def do_it(pipeline, strategy, derivative):
         merge.outputtype = "NIFTI"
         print merge.cmdline
         res = merge.run()
+
+        merge2 = afni.Calc()
+        merge2.inputs.in_file_a = 'zstat1.nii.gz'
+        merge2.inputs.in_file_b = 'zstat2.nii.gz'
+        merge2.inputs.expr = "a-b"
+        merge2.inputs.out_file = 'zstat_merged.nii.gz'
+        merge2.inputs.args = "-overwrite"
+        merge2.outputtype = "NIFTI"
+        print merge2.cmdline
+        res2 = merge2.run()
+        
         print "--MERGE DONE--"
 
         #make symbolic link to standard underlay image

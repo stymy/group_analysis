@@ -16,41 +16,42 @@ for derivative in derivatives:
             correlations = pandas.DataFrame()
 
             #PRINT PROGRESS
-            print "%s: %s %s VERSUS %s %s" %(derivative, pipeline, strategy, pipeline2, strategy2)
+            if (pipeline == pipeline2 and strategy != strategy2) or (pipeline!=pipeline2 and strategy == strategy2):
+                print "%s: %s %s VERSUS %s %s" %(derivative, pipeline, strategy, pipeline2, strategy2)
 
-            #LOAD ORIGINAL FILES
-            in_file = 'stats_%s_%s_%s/thresh_corrected_merged.nii.gz' %(pipeline, strategy, derivative)
-            in_file_2 = 'stats_%s_%s_%s/thresh_corrected_merged.nii.gz' %(pipeline2, strategy2, derivative)
+                #LOAD ORIGINAL FILES
+                in_file = 'stats_%s_%s_%s/zstat_merged.nii.gz' %(pipeline, strategy, derivative)
+                in_file_2 = 'stats_%s_%s_%s/zstat_merged.nii.gz' %(pipeline2, strategy2, derivative)
 
-            X = nb.load(in_file).get_data().flatten()
-            Y = nb.load(in_file_2).get_data().flatten()
+                X = nb.load(in_file).get_data().flatten()
+                Y = nb.load(in_file_2).get_data().flatten()
 
-            if len(X) != len(Y):
-                "WARNING arrays are different lengths, will use the length of %s to shuffle" %(in_file)
+                if len(X) != len(Y):
+                    "WARNING arrays are different lengths, will use the length of %s to shuffle" %(in_file)
 
-            #OUTPUT DIR
-            output_dir = 'nullstraps_%s_%s_v_%s_%s' %(pipeline, strategy, pipeline2, strategy2)
-            if not os.path.exists(output_dir):
-                os.mkdir(output_dir)
+                #OUTPUT DIR
+                output_dir = 'nullstraps_%s_%s_v_%s_%s' %(pipeline, strategy, pipeline2, strategy2)
+                if not os.path.exists(output_dir):
+                    os.mkdir(output_dir)
 
-            iterations = 10
-            #MAKE PERMUTES
-            for i in xrange(iterations):
-                index = "iter"+str(i)
+                iterations = 10
+                #MAKE PERMUTES
+                for i in xrange(iterations):
+                    index = "iter"+str(i)
 
-                newX = np.random.choice(X,size=(X.shape),replace=True)
-                newY = np.random.choice(Y,size=(Y.shape),replace=True)
+                    newX = np.random.choice(X,size=(X.shape),replace=True)
+                    newY = np.random.choice(Y,size=(Y.shape),replace=True)
 
 
-                #CORRELATE
-                corr, conc, spear, dice, ecc =  correlate(newX,newY,do_entropy=False)
-                correlations.set_value(index,'pearson',corr)
-                correlations.set_value(index,'concordance',conc)
-                correlations.set_value(index,'spearman',spear)
-                correlations.set_value(index,'dice',dice[0])
-                correlations.set_value(index,'ecc',ecc)
+                    #CORRELATE
+                    corr, conc, spear, dice, ecc =  correlate(newX,newY,do_entropy=False)
+                    correlations.set_value(index,'pearson',corr)
+                    correlations.set_value(index,'concordance',conc)
+                    correlations.set_value(index,'spearman',spear)
+                    correlations.set_value(index,'dice',dice[0])
+                    correlations.set_value(index,'ecc',ecc)
 
-            #PRINT MEANS
-            print correlations.mean()
+                #PRINT MEANS
+                print correlations.mean()
 
-            correlations.to_pickle(os.path.join(output_dir,'null_%s.pd'%(derivative)))
+                correlations.to_pickle(os.path.join(output_dir,'null_%s.pd'%(derivative)))

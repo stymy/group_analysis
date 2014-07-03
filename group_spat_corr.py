@@ -1,3 +1,4 @@
+import itertools as it
 import numpy as np
 import nibabel as nb
 import subprocess
@@ -36,7 +37,7 @@ def do_it(X,Y,do_entropy=True):
             die = -1
         else:
             die = 2.*s.sum()/xplusy
-            dice[str(percent)+'_'+str(threshold)] = die
+        dice[str(percent)+'_'+str(threshold)] = die
 
     if do_entropy:
         #entropy
@@ -67,39 +68,33 @@ if __name__ == "__main__":
         entropies = pandas.DataFrame()
         dices = pandas.DataFrame()
 
-        for pipeline in pipelines:
-            for strategy in strategies:
-
+        for pipeline, pipeline2 in it.combinations_with_replacement(pipelines,2):
+            for strategy, strategy2 in it.combinations(strategies,2):
+                in_file = 'stats_%s_%s_%s/zstat_merged.nii.gz' %(pipeline, strategy, derivative)
+                in_file_2 = 'stats_%s_%s_%s/zstat_merged.nii.gz' %(pipeline2, strategy2, derivative)
                 #THIS MAKES SURE THAT DATA IS THERE, \
                 #IF NOT, RUNS CORRESPONDING THE GROUP ANALYSIS SCRIPT
                 if not os.path.exists('stats_%s_%s_%s' %(pipeline, strategy, derivative)):
                     group_analysis.do_it(pipeline, strategy, derivative)
-
-                if not os.path.exists('stats_%s_%s_%s/thresh_corrected_merged.nii.gz' %(pipeline, strategy, derivative)):
+                if not os.path.exists('stats_%s_%s_%s' %(pipeline2, strategy2, derivative)):
+                    group_analysis.do_it(pipeline2, strategy2, derivative)
+                if not os.path.exists(in_file):
                     output_image.do_it(pipeline, strategy, derivative)
+                if not os.path.exists(in_file_2):
+                    output_image.do_it(pipeline2, strategy2, derivative)
 
-                #NOW compare between pipelines/strategies
-                in_file = 'stats_%s_%s_%s/thresh_corrected_merged.nii.gz' %(pipeline, strategy, derivative)
+                # make a spatial correlation matrix
+                print '%s_%s_%s_v_%s_%s_%s' %(pipeline, strategy, derivative, pipeline2, strategy2, derivative)
 
-                for pipeline2 in pipelines:
-                    for strategy2 in strategies:
-                        in_file_2 = 'stats_%s_%s_%s/thresh_corrected_merged.nii.gz' %(pipeline2, strategy2, derivative)
-                        if not os.path.exists(in_file_2):
-                            group_analysis.do_it(pipeline2, strategy2, derivative)
-
-                        mask_file = 'stats_%s_%s_%s/mask.nii.gz' %(pipeline, strategy, derivative)
-                        # make a spatial correlation matrix
-                        print '%s_%s_%s_v_%s_%s_%s' %(pipeline, strategy, derivative, pipeline2, strategy2, derivative)
-
-                        if not in_file == in_file_2:
-                            X = nb.load(in_file).get_data().flatten()
-                            Y = nb.load(in_file_2).get_data().flatten()
-                            corr, conc, spearman, dice, ecc =  do_it(X,Y)
-                            corrs.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, corr)
-                            concs.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, conc)
-                            spearmans.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, spearman)
-                            dices[pipeline+'_'+strategy+'_V_'+pipeline2+'_'+strategy2] = dice.values
-                            entropies.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, ecc)
+                if (pipeline == pipeline2 and strategy != strategy2) or (pipeline!=pipeline2 and strategy == strategy2):
+                    X = nb.load(in_file).get_data().flatten()
+                    Y = nb.load(in_file_2).get_data().flatten()
+                    corr, conc, spearman, dice, ecc =  do_it(X,Y,do_entropy=False)
+                    corrs.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, corr)
+                    concs.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, conc)
+                    spearmans.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, spearman)
+                    dices[pipeline+'_'+strategy+'_V_'+pipeline2+'_'+strategy2] = dice.values
+                    entropies.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, ecc)
 
         #SAVE TO SERIES 
         print derivative

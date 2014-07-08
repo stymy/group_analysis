@@ -49,7 +49,7 @@ for derivative in derivatives:
                     correlations.set_value(index,'pearson',corr)
                     correlations.set_value(index,'concordance',conc)
                     correlations.set_value(index,'spearman',spear)
-                    correlations.set_value(index,'dice',dice[0])
+                    correlations.set_value(index,'dice',dice[1])
                     correlations.set_value(index,'ecc',ecc)
 
                     #SAVE

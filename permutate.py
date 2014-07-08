@@ -39,8 +39,8 @@ for derivative in derivatives:
                 for i in xrange(iterations):
                     index = "iter"+str(i)
 
-                    newX = np.random.choice(X,size=(X.shape),replace=True)
-                    newY = np.random.choice(Y,size=(Y.shape),replace=True)
+                    newX = np.random.choice(X,size=(X.shape),replace=False)
+                    newY = Y
 
 
                     #CORRELATE
@@ -48,7 +48,7 @@ for derivative in derivatives:
                     correlations.set_value(index,'pearson',corr)
                     correlations.set_value(index,'concordance',conc)
                     correlations.set_value(index,'spearman',spear)
-                    correlations.set_value(index,'dice',dice[0])
+                    correlations.set_value(index,'dice',dice[1])
                     correlations.set_value(index,'ecc',ecc)
 
                 #PRINT MEANS

@@ -21,9 +21,14 @@ def do_it(pipeline, strategy, derivative):
   get_s3_paths.download(path_list, download_root, s3_prefix)
 
   print "\n----DOWNLOAD COMPLETE----\n"
-
+  
   #----CONCATENATE TO 4D----#
-  concat.concat(pipeline, strategy, derivative, path_list)
+  if derivative == 'dual_regression':
+    for brick in xrange(10):
+      new_path_list = [path+'[%d]'%(brick) for path in path_list]
+      concat.concat(pipeline, strategy, derivative, new_path_list, brick=str(brick))
+  else:
+    concat.concat(pipeline, strategy, derivative, path_list)
 
   #----RUN GLM-----#
   flameo = fsl.FLAMEO()
@@ -33,10 +38,8 @@ def do_it(pipeline, strategy, derivative):
   flameo.inputs.cov_split_file = modelname+'.grp'
   if derivative == 'vmhc':
     flameo.inputs.mask_file = 'vmhc_mask.nii'
-    print 'VVVVVMMMMMMMHHHHHCCCCCCCCCCC.............'
   else:
     flameo.inputs.mask_file = 'automask.nii'
-    print 'NOT VVVVVMMMMMMMHHHHHCCCCCCCCCCC.............'
   flameo.inputs.log_dir = 'stats_%s_%s_%s' %(pipeline, strategy, derivative)
   flameo.inputs.run_mode = 'ols'
   if not os.path.exists(flameo.inputs.log_dir):
@@ -53,10 +56,7 @@ def do_it(pipeline, strategy, derivative):
     mask_file = "mask.nii.gz"
     z_threshold = "2.3"
     p_threshold = "0.05"
-    if derivative == 'vmhcx':
-      underlay_img = os.path.join(currentdir, "std_3mm_hemisphere.nii.gz")
-    else:
-      underlay_img = os.path.join(currentdir, "std_3mm_brain.nii.gz")
+    underlay_img = os.path.join(currentdir, "std_3mm_brain.nii.gz")
     output_suffix = "corrected"+str(i+1)
     subprocess.call(["easythresh",  \
                      zstat_file,    \

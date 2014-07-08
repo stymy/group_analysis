@@ -91,10 +91,14 @@ if __name__ == "__main__":
                     Y = nb.load(in_file_2).get_data().flatten()
                     corr, conc, spearman, dice, ecc =  do_it(X,Y,do_entropy=False)
                     corrs.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, corr)
+                    corrs.set_value(pipeline2+'_'+strategy2, pipeline+'_'+strategy, corr)
                     concs.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, conc)
+                    concs.set_value(pipeline2+'_'+strategy2, pipeline+'_'+strategy, conc)
                     spearmans.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, spearman)
+                    spearmans.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, spearman)                  
                     dices[pipeline+'_'+strategy+'_V_'+pipeline2+'_'+strategy2] = dice.values
                     entropies.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, ecc)
+                    entropies.set_value(pipeline2+'_'+strategy2, pipeline+'_'+strategy, ecc)
 
         #SAVE TO SERIES 
         print derivative

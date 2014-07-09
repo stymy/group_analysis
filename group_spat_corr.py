@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     pipelines = ['cpac']
     strategies = ['filt_noglobal','filt_global', 'nofilt_global','nofilt_noglobal']
-    derivatives = ['reho', 'alff','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'falff']# 'eigenvector_binarize', vmhc
+    derivatives = ['reho','dual_regression', 'alff','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'falff']# 'eigenvector_binarize', vmhc
 
     derivs = pandas.Series()
 
@@ -74,10 +74,10 @@ if __name__ == "__main__":
                 in_file_2 = 'stats_%s_%s_%s/zstat_merged.nii.gz' %(pipeline2, strategy2, derivative)
                 #THIS MAKES SURE THAT DATA IS THERE, \
                 #IF NOT, RUNS CORRESPONDING THE GROUP ANALYSIS SCRIPT
-                if not os.path.exists('stats_%s_%s_%s' %(pipeline, strategy, derivative)):
-                    group_analysis.do_it(pipeline, strategy, derivative)
-                if not os.path.exists('stats_%s_%s_%s' %(pipeline2, strategy2, derivative)):
-                    group_analysis.do_it(pipeline2, strategy2, derivative)
+                #if not os.path.exists('stats_%s_%s_%s' %(pipeline, strategy, derivative)):
+                group_analysis.do_it(pipeline, strategy, derivative)
+                #if not os.path.exists('stats_%s_%s_%s' %(pipeline2, strategy2, derivative)):
+                group_analysis.do_it(pipeline2, strategy2, derivative)
                 if not os.path.exists(in_file):
                     output_image.do_it(pipeline, strategy, derivative)
                 if not os.path.exists(in_file_2):

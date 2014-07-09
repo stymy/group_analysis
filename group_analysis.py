@@ -14,21 +14,22 @@ def do_it(pipeline, strategy, derivative):
   csv_in = pandas.read_csv(csv_path)
   sub_pheno_list = get_s3_paths.get_subs(csv_in)
 
-  #----DOWNLOAD FILES----#
-  download_root = 'DATA/'
-  s3_prefix = 'https://s3.amazonaws.com/fcp-indi/data/Projects/ABIDE_Initiative/Outputs/' 
-  path_list = get_s3_paths.get_paths(sub_pheno_list, pipeline, strategy, derivative, download_root)
-  get_s3_paths.download(path_list, download_root, s3_prefix)
+  if not os.path.exists('concat_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)):
+      #----DOWNLOAD FILES----#
+      download_root = 'DATA/'
+      s3_prefix = 'https://s3.amazonaws.com/fcp-indi/data/Projects/ABIDE_Initiative/Outputs/' 
+      path_list = get_s3_paths.get_paths(sub_pheno_list, pipeline, strategy, derivative, download_root)
+      get_s3_paths.download(path_list, download_root, s3_prefix)
 
-  print "\n----DOWNLOAD COMPLETE----\n"
-  
-  #----CONCATENATE TO 4D----#
-  if derivative == 'dual_regression':
-    for brick in xrange(10):
-      new_path_list = [path+'[%d]'%(brick) for path in path_list]
-      concat.concat(pipeline, strategy, derivative, new_path_list, brick=str(brick))
-  else:
-    concat.concat(pipeline, strategy, derivative, path_list)
+      print "\n----DOWNLOAD COMPLETE----\n"
+      
+      #----CONCATENATE TO 4D----#
+      if derivative == 'dual_regression':
+        for brick in xrange(10):
+          new_path_list = [path+'[%d]'%(brick) for path in path_list]
+          concat.concat(pipeline, strategy, derivative, new_path_list, brick=str(brick))
+      else:
+        concat.concat(pipeline, strategy, derivative, path_list)
 
   #----RUN GLM-----#
   flameo = fsl.FLAMEO()

@@ -73,7 +73,7 @@ def create_con_file(con_dict, file_name, out_dir):
 model_name = "ABIDE_dx_age_site_fiq_meanfd"
 
 #load phenotypic data
-csv_path = '/home/ubuntu/Phenotypic_V1_0b_preprocessed1.csv'
+csv_path = 'Phenotypic_V1_0b_preprocessed1.csv'
 csv_in = pandas.read_csv(csv_path)
 
 #get relevant subjects
@@ -93,7 +93,7 @@ contrasts["ASDgtTDC"] = greater_than(dmat, "C(DX_GROUP, Sum)[S.1]", "C(DX_GROUP,
 contrasts["TDCgtASD"] = greater_than(dmat, "C(DX_GROUP, Sum)[S.2]","C(DX_GROUP, Sum)[S.1]")
 
 #output model, group, contrast, & ftst files
-cfsl.create_mat_file(dm, model_name, '/home/ubuntu/')
-cfsl.create_grp_file(dm, model_name, None, '/home/ubuntu/')
-con_file = create_con_file(contrasts, model_name, '/home/ubuntu/')
-#cfsl.create_con_ftst_file(con_file, model_name, None, '/home/ubuntu/')
+cfsl.create_mat_file(dm, model_name, '.')
+cfsl.create_grp_file(dm, model_name, None, '.')
+con_file = create_con_file(contrasts, model_name, '.')
+#cfsl.create_con_ftst_file(con_file, model_name, None, '.')

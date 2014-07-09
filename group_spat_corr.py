@@ -27,7 +27,7 @@ def do_it(X,Y,do_entropy=True):
     #dice coefficient
     U = np.union1d(X,Y)
     dice = pandas.Series()
-    for percent in xrange(100,0,-15):
+    for percent in [100,50,25,10,5,1]:
         threshold = np.percentile(abs(U),percent)
         x = abs(X)>threshold
         y = abs(Y)>threshold

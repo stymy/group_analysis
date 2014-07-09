@@ -24,7 +24,7 @@ def do_it(pipeline, strategy, derivative):
       print "\n----DOWNLOAD COMPLETE----\n"
       
       #----CONCATENATE TO 4D----#
-      if derivative == 'dual_regression':
+      if derivative.startswith('dual_regression'):
         for brick in xrange(10):
           new_path_list = [path+'[%d]'%(brick) for path in path_list]
           concat.concat(pipeline, strategy, derivative, new_path_list, brick=str(brick))

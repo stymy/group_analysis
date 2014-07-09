@@ -3,8 +3,8 @@ from get_s3_paths import get_subs, get_paths
 import pandas
 import os
 
-def concat(pipeline, strategy, derivative, path_list, subbrick=""):
-    out_file = 'concat_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative+subbrick)
+def concat(pipeline, strategy, derivative, path_list, brick=""):
+    out_file = 'concat_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative+brick)
     
     if not os.path.exists(out_file):
         tcat = afni.TCat()

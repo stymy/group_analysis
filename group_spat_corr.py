@@ -37,7 +37,7 @@ def do_it(X,Y,do_entropy=True):
             die = -1
         else:
             die = 2.*s.sum()/xplusy
-        dice[str(percent)+'_'+str(threshold)] = die
+        dice['%d_%.3f'%(percent,threshold)] = die
 
     if do_entropy:
         #entropy
@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     pipelines = ['cpac']
     strategies = ['filt_noglobal','filt_global', 'nofilt_global','nofilt_noglobal']
-    derivatives = ['reho', 'alff','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'falff','dual_regression0','dual_regression1','dual_regression2','dual_regression3','dual_regression4','dual_regression5','dual_regression6','dual_regression7','dual_regression8','dual_regression9']# 'eigenvector_binarize', vmhc
+    derivatives = ['reho', 'alff','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'falff','dual_regression0','dual_regression1','dual_regression2','dual_regression3','dual_regression4','dual_regression5','dual_regression6','dual_regression7','dual_regression8','dual_regression9','eigenvector_binarize']#, vmhc
 
     derivs = pandas.Series()
 
@@ -96,7 +96,7 @@ if __name__ == "__main__":
                     concs.set_value(pipeline2+'_'+strategy2, pipeline+'_'+strategy, conc)
                     spearmans.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, spearman)
                     spearmans.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, spearman)                  
-                    dices[pipeline+'_'+strategy+'_V_'+pipeline2+'_'+strategy2] = dice.values
+                    dices[pipeline+'_'+strategy+'V'+pipeline2+'_'+strategy2] = dice.values
                     entropies.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, ecc)
                     entropies.set_value(pipeline2+'_'+strategy2, pipeline+'_'+strategy, ecc)
 

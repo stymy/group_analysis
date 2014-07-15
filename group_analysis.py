@@ -62,20 +62,21 @@ def do_it(pipeline, strategy, derivative):
   #----CORRECT FOR MULTIPLE COMPARISONS----#
   currentdir = os.getcwd()
   os.chdir(flameo.inputs.log_dir)
-  zstat_files = glob.glob("zstat*.nii.gz")
-  for i, zstat_file in enumerate(zstat_files):
-    mask_file = '../mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
-    z_threshold = "2.3"
-    p_threshold = "0.05"
-    underlay_img = os.path.join(currentdir, "std_3mm_brain.nii.gz")
-    output_suffix = "corrected"+str(i+1)
-    subprocess.call(["easythresh",  \
-                     zstat_file,    \
-                     mask_file,     \
-                     z_threshold,   \
-                     p_threshold,   \
-                     underlay_img,  \
-                     output_suffix])
+  if not os.path.exists("threshcorrected1.nii.gz"):
+      zstat_files = glob.glob("zstat*.nii.gz")
+      for i, zstat_file in enumerate(zstat_files):
+        mask_file = '../mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
+        z_threshold = "2.3"
+        p_threshold = "0.05"
+        underlay_img = os.path.join(currentdir, "std_3mm_brain.nii.gz")
+        output_suffix = "corrected"+str(i+1)
+        subprocess.call(["easythresh",  \
+                           zstat_file,    \
+                           mask_file,     \
+                           z_threshold,   \
+                           p_threshold,   \
+                           underlay_img,  \
+                           output_suffix])
   print "\n----CORRECTION COMPLETE----\n"
   os.chdir(currentdir)
   print "\n----GROUP ANALYSIS COMPLETE----\n"

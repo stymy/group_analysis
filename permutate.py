@@ -7,7 +7,7 @@ from group_spat_corr import do_it as correlate
 
 pipelines = ['cpac']
 strategies = ['filt_noglobal','filt_global', 'nofilt_global','nofilt_noglobal']
-derivatives = ['reho', 'alff','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'falff']# 'eigenvector_binarize', vmhc
+derivatives = ['reho', 'alff','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'falff', 'eigenvector_binarize', 'vmhc']
 
 for derivative in derivatives:
     for pipeline, pipeline2 in it.combinations_with_replacement(pipelines,2):
@@ -44,7 +44,7 @@ for derivative in derivatives:
 
 
                     #CORRELATE
-                    corr, conc, spear, dice, ecc =  correlate(newX,newY,do_entropy=False)
+                    corr, conc, spear, dice, ecc =  correlate(newX,newY)
                     correlations.set_value(index,'pearson',corr)
                     correlations.set_value(index,'concordance',conc)
                     correlations.set_value(index,'spearman',spear)

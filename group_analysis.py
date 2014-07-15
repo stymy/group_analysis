@@ -18,11 +18,13 @@ def do_it(pipeline, strategy, derivative):
       #----DOWNLOAD FILES----#
       download_root = 'DATA/'
       s3_prefix = 'https://s3.amazonaws.com/fcp-indi/data/Projects/ABIDE_Initiative/Outputs/' 
+      if derivative.startswith('dual_regression'):
+        derivative = 'dual_regression'
       path_list = get_s3_paths.get_paths(sub_pheno_list, pipeline, strategy, derivative, download_root)
       get_s3_paths.download(path_list, download_root, s3_prefix)
 
       print "\n----DOWNLOAD COMPLETE----\n"
-      
+
       #----CONCATENATE TO 4D----#
       if derivative.startswith('dual_regression'):
         for brick in xrange(10):
@@ -31,16 +33,24 @@ def do_it(pipeline, strategy, derivative):
       else:
         concat.concat(pipeline, strategy, derivative, path_list)
 
+  #----MAKE MASK----#
+  if not os.path.exists('mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)):
+    print "MASKING..."
+    masker = fsl.maths.MathsCommand()
+    masker.inputs.in_file = 'concat_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
+    masker.inputs.args = '-abs -Tmin -bin'
+    masker.inputs.output_type = 'NIFTI_GZ'
+    masker.inputs.out_file = 'mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
+    res = masker.run()
+  print "\n----MASKING COMPLETE----\n"
+
   #----RUN GLM-----#
   flameo = fsl.FLAMEO()
   flameo.inputs.cope_file = 'concat_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
   flameo.inputs.design_file = modelname+'.mat'
   flameo.inputs.t_con_file = modelname+'.con'
   flameo.inputs.cov_split_file = modelname+'.grp'
-  if derivative == 'vmhc':
-    flameo.inputs.mask_file = 'vmhc_mask.nii'
-  else:
-    flameo.inputs.mask_file = 'automask.nii'
+  flameo.inputs.mask_file = 'mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
   flameo.inputs.log_dir = 'stats_%s_%s_%s' %(pipeline, strategy, derivative)
   flameo.inputs.run_mode = 'ols'
   if not os.path.exists(flameo.inputs.log_dir):
@@ -52,20 +62,22 @@ def do_it(pipeline, strategy, derivative):
   #----CORRECT FOR MULTIPLE COMPARISONS----#
   currentdir = os.getcwd()
   os.chdir(flameo.inputs.log_dir)
-  zstat_files = glob.glob("zstat*.nii.gz")
-  for i, zstat_file in enumerate(zstat_files):
-    mask_file = "mask.nii.gz"
-    z_threshold = "2.3"
-    p_threshold = "0.05"
-    underlay_img = os.path.join(currentdir, "std_3mm_brain.nii.gz")
-    output_suffix = "corrected"+str(i+1)
-    subprocess.call(["easythresh",  \
-                     zstat_file,    \
-                     mask_file,     \
-                     z_threshold,   \
-                     p_threshold,   \
-                     underlay_img,  \
-                     output_suffix])
+  if not os.path.exists("threshcorrected1.nii.gz"):
+      zstat_files = glob.glob("zstat*.nii.gz")
+      for i, zstat_file in enumerate(zstat_files):
+        mask_file = '../mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
+        z_threshold = "2.3"
+        p_threshold = "0.05"
+        underlay_img = os.path.join(currentdir, "std_3mm_brain.nii.gz")
+        output_suffix = "corrected"+str(i+1)
+        subprocess.call(["easythresh",  \
+                           zstat_file,    \
+                           mask_file,     \
+                           z_threshold,   \
+                           p_threshold,   \
+                           underlay_img,  \
+                           output_suffix])
+
   print "\n----CORRECTION COMPLETE----\n"
   os.chdir(currentdir)
   print "\n----GROUP ANALYSIS COMPLETE----\n"

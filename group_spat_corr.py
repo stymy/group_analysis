@@ -54,9 +54,9 @@ def do_it(X,Y,do_entropy=True):
 
 if __name__ == "__main__":
 
-    pipelines = ['cpac']
+    pipelines = ['cpac','dparsf','niak']
     strategies = ['filt_noglobal','filt_global', 'nofilt_global','nofilt_noglobal']
-    derivatives = ['reho', 'alff','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'falff', 'eigenvector_binarize']#, 'dual_regression']
+    derivatives = ['reho', 'alff','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'falff','dual_regression0','dual_regression1','dual_regression2','dual_regression3','dual_regression4','dual_regression5','dual_regression6','dual_regression7','dual_regression8','dual_regression9','eigenvector_binarize', 'vmhc']
 
     derivs = pandas.Series()
 

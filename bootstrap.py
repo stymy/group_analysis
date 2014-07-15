@@ -6,8 +6,8 @@ import itertools as it
 from group_spat_corr import do_it as correlate
 
 pipelines = ['cpac']
-strategies = ["filt_global","filt_noglobal","nofilt_global","nofilt_noglobal"]
-derivatives = ['reho', 'alff','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'falff']# 'eigenvector_binarize', vmhc
+strategies = ['filt_noglobal','filt_global', 'nofilt_global','nofilt_noglobal']
+derivatives = ['reho', 'alff','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'falff', 'eigenvector_binarize', 'vmhc']
 
 for derivative in derivatives:
     for pipeline, pipeline2 in it.combinations_with_replacement(pipelines,2):
@@ -64,5 +64,4 @@ for derivative in derivatives:
                 #PRINT MEANS
                 print correlations.mean()
 
-                correlations.to_pickle(os.path.join(output_dir,'boot_%s.pd'%(derivative)))
                 correlations.to_csv(os.path.join(output_dir,'boot_%s.csv'%(derivative)))

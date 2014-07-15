@@ -77,6 +77,7 @@ def do_it(pipeline, strategy, derivative):
                            p_threshold,   \
                            underlay_img,  \
                            output_suffix])
+
   print "\n----CORRECTION COMPLETE----\n"
   os.chdir(currentdir)
   print "\n----GROUP ANALYSIS COMPLETE----\n"

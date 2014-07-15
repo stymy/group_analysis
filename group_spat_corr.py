@@ -37,7 +37,7 @@ def do_it(X,Y,do_entropy=True):
             die = -1
         else:
             die = 2.*s.sum()/xplusy
-        dice['%d_%.3f'%(percent,threshold)] = die
+        dice[str(percent)+'_'+str(threshold)] = die
 
     if do_entropy:
         #entropy
@@ -95,8 +95,9 @@ if __name__ == "__main__":
                     concs.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, conc)
                     concs.set_value(pipeline2+'_'+strategy2, pipeline+'_'+strategy, conc)
                     spearmans.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, spearman)
-                    spearmans.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, spearman)                  
-                    dices[pipeline+'_'+strategy+'V'+pipeline2+'_'+strategy2] = dice.values
+                    spearmans.set_value(pipeline2+'_'+strategy2, pipeline+'_'+strategy, spearman)                  
+                    dices[pipeline+'_'+strategy+'_v_'+pipeline2+'_'+strategy2] = dice.values
+                    dices[pipeline2+'_'+strategy2+'_v_'+pipeline+'_'+strategy] = dice.values
                     entropies.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, ecc)
                     entropies.set_value(pipeline2+'_'+strategy2, pipeline+'_'+strategy, ecc)
 
@@ -111,3 +112,8 @@ if __name__ == "__main__":
     #TO ANALYZE, LOAD LIKE THIS:
     #a = pandas.read_pickle('/home/ubuntu/spat_corr_dataframes')
     #a.falff.pearson.cpac_filt_global.cpac_nofilt_global
+    #for i, deriv in enumerate(derivs):
+      #print derivs.index[i]              
+      #print deriv
+      #for j, corr in enumerate(deriv):
+      #corr.to_csv("spat_corr_%s_%s.csv"%(derivs.index[i], derivs.index[j]))

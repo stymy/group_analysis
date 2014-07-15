@@ -36,21 +36,27 @@ for derivative in derivatives:
 
                 iterations = 10
                 #MAKE BOOTSTRAPS
+                scrambling_mat = np.random.choice(len(X), size=(len(X),iterations), replace=True)
+                #check if unique
+                # if len of boot-ndx != iterations:
+                # random choose iteration -len(boot-ndx)
+                # add to list of indeices 
+                # remove duplicates
+                # or use sklearn
+                # cross_validation bootstrap
                 for i in xrange(iterations):
                     index = "iter"+str(i)
 
-                    scrambling_mat = np.random.choice(len(X), size=len(X))
-
-                    newX = X[scrambling_mat]
-                    newY = Y[scrambling_mat]
+                    newX = X[scrambling_mat[:,i]]
+                    newY = Y[scrambling_mat[:,i]]
 
                     #CORRELATE
                     corr, conc, spear, dice, ecc =  correlate(newX,newY)
                     correlations.set_value(index,'pearson',corr)
                     correlations.set_value(index,'concordance',conc)
-                    correlations.set_value(index,'spearman',spear)
+                    correlations.set_value(index,'spearmans',spear)
                     correlations.set_value(index,'dice',dice[1])
-                    correlations.set_value(index,'ecc',ecc)
+                    correlations.set_value(index,'entropy',ecc)
 
                     #SAVE
                     np.save(os.path.join(output_dir,'strap_%s'%(index)), scrambling_mat)
@@ -58,4 +64,4 @@ for derivative in derivatives:
                 #PRINT MEANS
                 print correlations.mean()
 
-                correlations.to_pickle(os.path.join(output_dir,'boot_%s.pd'%(derivative)))
+                correlations.to_csv(os.path.join(output_dir,'boot_%s.csv'%(derivative)))

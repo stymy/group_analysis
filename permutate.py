@@ -39,7 +39,7 @@ for derivative in derivatives:
                 for i in xrange(iterations):
                     index = "iter"+str(i)
 
-                    newX = np.random.choice(X,size=(X.shape),replace=False)
+                    newX = np.random.permutation(X)
                     newY = Y
 
 
@@ -47,11 +47,11 @@ for derivative in derivatives:
                     corr, conc, spear, dice, ecc =  correlate(newX,newY)
                     correlations.set_value(index,'pearson',corr)
                     correlations.set_value(index,'concordance',conc)
-                    correlations.set_value(index,'spearman',spear)
+                    correlations.set_value(index,'spearmans',spear)
                     correlations.set_value(index,'dice',dice[1])
-                    correlations.set_value(index,'ecc',ecc)
+                    correlations.set_value(index,'entropy',ecc)
 
                 #PRINT MEANS
                 print correlations.mean()
 
-                correlations.to_pickle(os.path.join(output_dir,'null_%s.pd'%(derivative)))
+                correlations.to_csv(os.path.join(output_dir,'null_%s.csv'%(derivative)))

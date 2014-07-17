@@ -22,7 +22,7 @@ echo $overlay
 # Use afni to plot axial slicea
 afni \
     -com "OPEN_WINDOW sagittalimage" \
-    -com "SWITCH_UNDERLAY std_1mm_head.nii.gz" \
+    -com "SWITCH_UNDERLAY MNI152_.5mm_masked_edged_tt.nii.gz" \
     -com "SWITCH_OVERLAY ${overlay}" \
     -com "SET_PBAR_ALL -99 1 Spectrum:yellow_to_cyan+gap" \
     -com "OPEN_WINDOW axialimage mont=5x1:12 geom=1800x430" \

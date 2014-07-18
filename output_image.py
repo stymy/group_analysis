@@ -36,8 +36,8 @@ def do_it(pipeline, strategy, derivative):
         print "--MERGE DONE--"
 
         #make symbolic link to standard underlay image
-        from_dir = os.path.join(currentdir,"std_1mm_head.nii.gz")
-        to_dir = os.path.join(thisdir, "std_1mm_head.nii.gz")
+        from_dir = os.path.join(currentdir,"MNI152_.5mm_masked_edged_tt.nii.gz")
+        to_dir = os.path.join(thisdir, "MNI152_.5mm_masked_edged_tt.nii.gz")
         subprocess.call(["ln", "-s", from_dir, to_dir])
         print "--LINKED TO STANDARD--"
 
@@ -54,8 +54,8 @@ def do_it(pipeline, strategy, derivative):
 if __name__ == "__main__":
 
     pipelines = ['cpac']
-    strategies = ['filt_noglobal','filt_global','nofilt_global','nofilt_noglobal']
-    derivatives = ['reho', 'degree_binarize','falff', 'alff','degree_weighted','degree_binarize','eigenvector_binarize','eigenvector_weighted','lfcd'] #vmhc, dual_regression
+    strategies = ['filt_noglobal']#,'filt_global','nofilt_global','nofilt_noglobal']
+    derivatives = ['reho']#, 'degree_binarize','falff', 'alff','degree_weighted','degree_binarize','eigenvector_binarize','eigenvector_weighted','lfcd'] #vmhc, dual_regression
 
     for pipeline in pipelines:
         for strategy in strategies:

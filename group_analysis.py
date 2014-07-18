@@ -18,10 +18,12 @@ def do_it(pipeline, strategy, derivative):
       #----DOWNLOAD FILES----#
       download_root = 'DATA/'
       s3_prefix = 'https://s3.amazonaws.com/fcp-indi/data/Projects/ABIDE_Initiative/Outputs/' 
+      orig_derivative = derivative
       if derivative.startswith('dual_regression'):
         derivative = 'dual_regression'
       path_list = get_s3_paths.get_paths(sub_pheno_list, pipeline, strategy, derivative, download_root)
       get_s3_paths.download(path_list, download_root, s3_prefix)
+      derivative = orig_derivative
 
       print "\n----DOWNLOAD COMPLETE----\n"
 
@@ -87,6 +89,30 @@ if __name__ == "__main__":
         print "USAGE:\n \
         python group_analysis.py [pipeline] [strategy] [derivative]\n \
         EXAMPLE: python group_analysis.py cpac filt_noglobal vmhc\n"
+
+    if len(sys.argv) == 2:
+        #----VARIABLES----#
+        pipeline = sys.argv[1]
+        strategies = ['filt_noglobal','filt_global', 'nofilt_global','nofilt_noglobal']
+        derivatives = ['reho','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'dual_regression0','dual_regression1','dual_regression2','dual_regression3','dual_regression4','dual_regression5','dual_regression6','dual_regression7','dual_regression8','dual_regression9','eigenvector_binarize', 'vmhc']#'alff', 'falff']
+        if not pipeline == "niak":
+          derivatives.append('alff')
+          derivatives.append('falff')
+        for strategy in strategies:
+          for derivative in derivatives:
+            do_it(pipeline, strategy, derivative)
+
+    if len(sys.argv) == 3:
+        #----VARIABLES----#
+        pipeline = sys.argv[1]
+        strategy = sys.argv[2]
+        derivatives = ['reho','degree_weighted','degree_binarize','eigenvector_weighted','lfcd','dual_regression0','dual_regression1','dual_regression2','dual_regression3','dual_regression4','dual_regression5','dual_regression6','dual_regression7','dual_regression8','dual_regression9','eigenvector_binarize', 'vmhc']#alff, falff
+        if not pipeline == "niak":
+          derivatives.append('alff')
+          derivatives.append('falff')
+
+        for derivative in derivatives:
+          do_it(pipeline, strategy, derivative)
     else:
         #----VARIABLES----#
         pipeline = sys.argv[1] #'cpac'

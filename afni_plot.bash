@@ -9,7 +9,7 @@ cd $(dirname ${fname})
 overlay=$(basename ${fname})
 
 # Get Center of Mass
-cm=$(3dCM std_1mm_head.nii.gz)
+cm=$(3dCM MNI152_.5mm_masked_edged_tt.nii.gz)
 
 # Open up window 
 window=42

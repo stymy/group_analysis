@@ -30,20 +30,23 @@ def do_it(pipeline, strategy, derivative):
       #----CONCATENATE TO 4D----#
       if derivative.startswith('dual_regression'):
         for brick in xrange(10):
-          new_path_list = [path+'[%d]'%(brick) for path in path_list]
+          new_path_list = [path+'[%s]'%(str(brick)) for path in path_list]
           concat.concat(pipeline, strategy, derivative, new_path_list, brick=str(brick))
       else:
         concat.concat(pipeline, strategy, derivative, path_list)
 
   #----MAKE MASK----#
-  if not os.path.exists('mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)):
-    print "MASKING..."
-    masker = fsl.maths.MathsCommand()
-    masker.inputs.in_file = 'concat_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
-    masker.inputs.args = '-abs -Tmin -bin'
-    masker.inputs.output_type = 'NIFTI_GZ'
-    masker.inputs.out_file = 'mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
-    res = masker.run()
+  mask_file = 'mask_dparsf.nii' #standard
+
+  # if not os.path.exists('mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)):
+  #   print "MASKING..."
+  #   masker = fsl.maths.MathsCommand()
+  #   masker.inputs.in_file = 'concat_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
+  #   masker.inputs.args = '-abs -Tmin -bin'
+  #   masker.inputs.output_type = 'NIFTI_GZ'
+  #   masker.inputs.out_file = 'mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
+  #   res = masker.run()
+  #   mask_file = masker.inputs.out_file
   print "\n----MASKING COMPLETE----\n"
 
   #----RUN GLM-----#
@@ -52,14 +55,15 @@ def do_it(pipeline, strategy, derivative):
   flameo.inputs.design_file = modelname+'.mat'
   flameo.inputs.t_con_file = modelname+'.con'
   flameo.inputs.cov_split_file = modelname+'.grp'
-  flameo.inputs.mask_file = 'mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
+  # flameo.inputs.mask_file = 'mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
+  flameo.inputs.mask_file = mask_file
   flameo.inputs.log_dir = 'stats_%s_%s_%s' %(pipeline, strategy, derivative)
   flameo.inputs.run_mode = 'ols'
-  if not os.path.exists(flameo.inputs.log_dir):
-      res = flameo.run()
-      "----GLM COMPLETE----"
-  else:
-      print "\n----FLAMEO DID NOT RUN. Folder exists. Delete it to recalculate GLM----\n"
+#  if not os.path.exists(flameo.inputs.log_dir):
+  res = flameo.run()
+  print "----GLM COMPLETE----"
+  # else:
+  #     print "\n----FLAMEO DID NOT RUN. Folder exists. Delete it to recalculate GLM----\n"
 
   #----CORRECT FOR MULTIPLE COMPARISONS----#
   currentdir = os.getcwd()

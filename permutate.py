@@ -34,7 +34,7 @@ for derivative in derivatives:
                 if not os.path.exists(output_dir):
                     os.mkdir(output_dir)
 
-                iterations = 10
+                iterations = 100
                 #MAKE PERMUTES
                 for i in xrange(iterations):
                     index = "iter"+str(i)

@@ -44,7 +44,7 @@ def do_it(X,Y,X_corrected,Y_corrected,do_entropy=True):
         
         xplusy = x_pos.sum()+x_neg.sum()+y_pos.sum()+y_neg.sum()
         if  xplusy == 0:
-            die = -1
+            die = 0
         else:
             die = 2.*s.sum()/xplusy
         # dice[str(percent)+'_'+str(threshold)] = die
@@ -65,19 +65,23 @@ def do_it(X,Y,X_corrected,Y_corrected,do_entropy=True):
 
 if __name__ == "__main__":
 
-    pipelines = ['cpac', 'dparsf', 'niak','ccs']
-    strategies = ['filt_noglobal','filt_global', 'nofilt_global','nofilt_noglobal']
-    derivatives = ['reho','degree_weighted','degree_binarize','eigenvector_weighted','lfcd','dual_regression0','dual_regression1','dual_regression2','dual_regression3','dual_regression4','dual_regression5','dual_regression6','dual_regression7','dual_regression8','dual_regression9','eigenvector_binarize', 'vmhc']#alff, falff
+    derivatives = ['reho','degree_weighted','degree_binarize','eigenvector_weighted','lfcd','dual_regression0','dual_regression1','dual_regression2','dual_regression3','dual_regression4','dual_regression5','dual_regression6','dual_regression7','dual_regression8','dual_regression9','eigenvector_binarize', 'vmhc','alff', 'falff']
 
     derivs = pandas.Series()
 
     for derivative in derivatives:
+
+        pipelines = ['cpac', 'dparsf', 'niak','ccs']
+        strategies = ['filt_noglobal','filt_global', 'nofilt_global','nofilt_noglobal']
 
         corrs = pandas.DataFrame()
         concs = pandas.DataFrame()
         spearmans = pandas.DataFrame()
         entropies = pandas.DataFrame()
         dices = pandas.DataFrame()
+
+        if derivative == 'alff' or derivative == 'falff':
+            pipelines.remove('niak')
 
         for pipeline, pipeline2 in it.combinations_with_replacement(pipelines,2):
             for strategy, strategy2 in it.combinations_with_replacement(strategies,2):
@@ -88,10 +92,10 @@ if __name__ == "__main__":
                 
                 #THIS MAKES SURE THAT DATA IS THERE, \
                 #IF NOT, RUNS CORRESPONDING THE GROUP ANALYSIS SCRIPT
-#                if not os.path.exists('stats_%s_%s_%s' %(pipeline, strategy, derivative)):
-                group_analysis.do_it(pipeline, strategy, derivative)
-#                if not os.path.exists('stats_%s_%s_%s' %(pipeline2, strategy2, derivative)):
-                group_analysis.do_it(pipeline2, strategy2, derivative)
+                if not os.path.exists('stats_%s_%s_%s' %(pipeline, strategy, derivative)):
+                    group_analysis.do_it(pipeline, strategy, derivative)
+                if not os.path.exists('stats_%s_%s_%s' %(pipeline2, strategy2, derivative)):
+                    group_analysis.do_it(pipeline2, strategy2, derivative)
                 if not os.path.exists(in_file):
                     output_image.do_it(pipeline, strategy, derivative)
                 if not os.path.exists(in_file_2):
@@ -105,7 +109,7 @@ if __name__ == "__main__":
                     Y = nb.load(in_file_2).get_data().flatten()
                     X_corrected = nb.load(in_file_3).get_data().flatten()
                     Y_corrected = nb.load(in_file_4).get_data().flatten()
-                    corr, conc, spearman, dice, ecc =  do_it(X,Y,X_corrected,Y_corrected,do_entropy=False)
+                    corr, conc, spearman, dice, ecc =  do_it(X,Y,X_corrected,Y_corrected,do_entropy=True)
                     corrs.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, corr)
                     corrs.set_value(pipeline2+'_'+strategy2, pipeline+'_'+strategy, corr)
                     concs.set_value(pipeline+'_'+strategy, pipeline2+'_'+strategy2, conc)
@@ -125,7 +129,7 @@ if __name__ == "__main__":
         index=['pearson','concordance','spearmans','entropy','dice'],name=derivative)
         
         derivs[derivative] = correlations
-        derivs.to_pickle('spat_corr_dataframes_newdice')
+        derivs.to_pickle('spat_corr_dataframes')
     
     #TO ANALYZE, LOAD LIKE THIS:
     #a = pandas.read_pickle('/home/ubuntu/spat_corr_dataframes')

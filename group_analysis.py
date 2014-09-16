@@ -37,7 +37,7 @@ def do_it(pipeline, strategy, derivative):
 
   #----MAKE MASK----#
   mask_file = 'mask_dparsf.nii' #standard
-
+  #for individual masks
   # if not os.path.exists('mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)):
   #   print "MASKING..."
   #   masker = fsl.maths.MathsCommand()
@@ -59,11 +59,11 @@ def do_it(pipeline, strategy, derivative):
   flameo.inputs.mask_file = mask_file
   flameo.inputs.log_dir = 'stats_%s_%s_%s' %(pipeline, strategy, derivative)
   flameo.inputs.run_mode = 'ols'
-#  if not os.path.exists(flameo.inputs.log_dir):
-  res = flameo.run()
-  print "----GLM COMPLETE----"
-  # else:
-  #     print "\n----FLAMEO DID NOT RUN. Folder exists. Delete it to recalculate GLM----\n"
+  if not os.path.exists(flameo.inputs.log_dir):
+    res = flameo.run()
+    print "----GLM COMPLETE----"
+  else:
+    print "\n----FLAMEO DID NOT RUN. Folder exists. Delete it to recalculate GLM----\n"
 
   #----CORRECT FOR MULTIPLE COMPARISONS----#
   currentdir = os.getcwd()
@@ -71,7 +71,7 @@ def do_it(pipeline, strategy, derivative):
   if not os.path.exists("threshcorrected1.nii.gz"):
       zstat_files = glob.glob("zstat*.nii.gz")
       for i, zstat_file in enumerate(zstat_files):
-        mask_file = '../mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
+        mask_file = ../mask_dparsf.nii #'../mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
         z_threshold = "2.3"
         p_threshold = "0.05"
         underlay_img = os.path.join(currentdir, "std_3mm_brain.nii.gz")

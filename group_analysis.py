@@ -38,7 +38,8 @@ def do_it(pipeline, strategy, derivative):
   #----MAKE MASK----#
   mask_file = 'mask_dparsf.nii' #standard
   #for individual masks
-  # if not os.path.exists('mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)):
+  #if not os.path.exists('mask_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)):
+  #download fun_mask from s3 and get 80-90% mask.
   #   print "MASKING..."
   #   masker = fsl.maths.MathsCommand()
   #   masker.inputs.in_file = 'concat_%s_%s_%s.nii.gz' %(pipeline, strategy, derivative)
@@ -89,16 +90,18 @@ def do_it(pipeline, strategy, derivative):
   print "\n----GROUP ANALYSIS COMPLETE----\n"
 
 if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print "USAGE:\n \
-        python group_analysis.py [pipeline] [strategy] [derivative]\n \
-        EXAMPLE: python group_analysis.py cpac filt_noglobal vmhc\n"
 
+  print "USAGE:\n \
+  python group_analysis.py [pipeline] [strategy] [derivative]\n \
+  EXAMPLE: python group_analysis.py cpac filt_noglobal vmhc\n"
+
+  derivatives = ['reho','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'dual_regression0','dual_regression1','dual_regression2','dual_regression3','dual_regression4','dual_regression5','dual_regression6','dual_regression7','dual_regression8','dual_regression9','eigenvector_binarize', 'vmhc']#'alff', 'falff']
+  
     if len(sys.argv) == 2:
         #----VARIABLES----#
         pipeline = sys.argv[1]
         strategies = ['filt_noglobal','filt_global', 'nofilt_global','nofilt_noglobal']
-        derivatives = ['reho','degree_weighted','degree_binarize','eigenvector_weighted','lfcd', 'dual_regression0','dual_regression1','dual_regression2','dual_regression3','dual_regression4','dual_regression5','dual_regression6','dual_regression7','dual_regression8','dual_regression9','eigenvector_binarize', 'vmhc']#'alff', 'falff']
+  
         if not pipeline == "niak":
           derivatives.append('alff')
           derivatives.append('falff')
@@ -110,7 +113,7 @@ if __name__ == "__main__":
         #----VARIABLES----#
         pipeline = sys.argv[1]
         strategy = sys.argv[2]
-        derivatives = ['reho','degree_weighted','degree_binarize','eigenvector_weighted','lfcd','dual_regression0','dual_regression1','dual_regression2','dual_regression3','dual_regression4','dual_regression5','dual_regression6','dual_regression7','dual_regression8','dual_regression9','eigenvector_binarize', 'vmhc']#alff, falff
+
         if not pipeline == "niak":
           derivatives.append('alff')
           derivatives.append('falff')

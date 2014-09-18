@@ -61,11 +61,17 @@ if __name__ == "__main__":
     csv_in = pandas.read_csv(csv_path)
     # Get relevant subjects
     sub_pheno_list = get_subs(csv_in)
-
+    
+    if len(sys.argv) < 4:
     # Choose pipeline, strategy, and derivative of interest
-    pipeline = 'cpac'
-    strategy = 'filt_global'
-    derivative = 'reho'
+        pipeline = 'cpac'
+        strategy = 'filt_global'
+        derivative = 'reho'
+    
+    else:
+        pipeline = sys.argv[1] #'cpac'
+        strategy = sys.argv[2] #'filt_noglobal'
+        derivative = sys.argv[3] #'vmhc'
 
     # Download to specified file structure
     path_list = get_paths(sub_pheno_list, pipeline, strategy, derivative, download_root)

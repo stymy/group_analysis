@@ -1,4 +1,5 @@
 # Import packages
+import sys
 import os
 import pandas
 import urllib
@@ -50,9 +51,9 @@ def download(path_list, download_root, s3_prefix):
 
 if __name__ == "__main__":
     # Path to phenotypic csv file
-    csv_path = '/home/ubuntu/Phenotypic_V1_0b_preprocessed1.csv'
+    csv_path = 'Phenotypic_V1_0b_preprocessed1.csv'
     # Download directory
-    download_root = '/home/ubuntu/'
+    download_root = 'DATA/'
     # S3 path prefixn
     s3_prefix = 'https://s3.amazonaws.com/fcp-indi/data/Projects/'\
                 'ABIDE_Initiative/Outputs/'
@@ -75,4 +76,4 @@ if __name__ == "__main__":
 
     # Download to specified file structure
     path_list = get_paths(sub_pheno_list, pipeline, strategy, derivative, download_root)
-    download(path_list, s3_prefix)
+    download(path_list, download_root, s3_prefix)

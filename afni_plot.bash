@@ -27,7 +27,7 @@ afni \
     -com "SET_PBAR_ALL -99 1 Spectrum:yellow_to_cyan+gap" \
     -com "OPEN_WINDOW axialimage mont=5x1:12 geom=1800x430" \
     -com "SET_XHAIRS OFF" \
-    -com "SAVE_PNG axialimage ${outname}_axial.png" \
+    -com "SAVE_PNG axialimage ${outname}_axial.png blowup=.5" \
     -com "SAVE_PNG sagittalimage ${outname}_saggital.png" \
     -com "QUIT"
     # -com "SET_FUNC_RANGE 0" \

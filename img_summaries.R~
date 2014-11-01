@@ -1,9 +1,12 @@
 library(png)
 library(grid)
 library(ggplot2)
+<<<<<<< HEAD
+=======
 
-core_dir <- "/Users/aimi/Code/images/"
 
+core_dir <- "/home2/aimiwat/code/group_analysis"
+>>>>>>> bd9343e3a9149d082cffe10d64f434e6dfed5901
 
 corrs <- c("concordance","pearson","dice","entropy","spearmans")
 strats <- c("filt_global","filt_noglobal","nofilt_global","nofilt_noglobal")
@@ -34,10 +37,13 @@ for (pipe in 1:length(pipes))
       print (derivs[i])
       if (derivs[i] != "empty")
       {
-
-        dir_name <- paste0(core_dir,pipstrat,"_",derivs[i])
-      } else { dir_name <- paste0(core_dir,"/empty")}
-
+<<<<<<< HEAD
+        dir_name <- paste0("/Users/aimi/Code/images/",pipstrat,"_",derivs[i])
+      } else { dir_name <- "/Users/aimi/Code/images/empty"}
+=======
+        dir_name <- paste0(core_dir,"/images/",pipstrat,"_",derivs[i])
+      } else { dir_name <- paste0(core_dir,"/images/empty")}
+>>>>>>> bd9343e3a9149d082cffe10d64f434e6dfed5901
       axials[i] = paste0(dir_name,"_axial.png")
       saggitals[i]=paste0(dir_name,"_saggital.png")
     }
@@ -91,8 +97,12 @@ for (pipe in 1:length(pipes))
         plot.margin = unit(c(0,0,0,0),"cm")
       )
     
-
-    ggsave(filename=paste0(core_dir,"image_summaries/",pipstrat,"img_summaries_1.png"), plot=q, width=8.5, height=11, units="in")
+<<<<<<< HEAD
+    ggsave(filename=paste0("/Users/aimi/Code/images/image_summaries/",pipstrat,"img_summaries_1.png"), plot=q, width=8.5, height=11, units="in")
+=======
+    ggsave(filename=paste0(core_dir,"/image_summaries/",pipstrat,"img_summaries_1.png"), plot=q, width=8.5, height=11, units="in")
+>>>>>>> bd9343e3a9149d082cffe10d64f434e6dfed5901
+  
     
     q <- qplot(1:40,1:40, geom="blank")+
       #geom_ribbon(aes(ymin=0, ymax=40), fill="black") +
@@ -138,8 +148,11 @@ for (pipe in 1:length(pipes))
         plot.margin = unit(c(0,0,0,0),"cm")
       )
   
+<<<<<<< HEAD
+    ggsave(filename=paste0("/Users/aimi/Code/images/image_summaries/",pipstrat,"img_summaries_2.png"), plot=q, width=8.5, height=11, units="in")
+=======
     ggsave(filename=paste0(core_dir,"/image_summaries/",pipstrat,"img_summaries_2.png"), plot=q, width=8.5, height=11, units="in")
-
+>>>>>>> bd9343e3a9149d082cffe10d64f434e6dfed5901
     
      r<- qplot(1:40,1:40, geom="blank") +
       #geom_ribbon(aes(ymin=0, ymax=40), fill="black") +
@@ -165,8 +178,12 @@ for (pipe in 1:length(pipes))
         plot.margin = unit(c(0,0,0,0),"cm")
       )
     
-
+<<<<<<< HEAD
+    ggsave(filename=paste0("/Users/aimi/Code/images/image_summaries/",pipstrat,"img_summaries_3.png"), plot=r, width=8.5, height=11, units="in")
+=======
     ggsave(filename=paste0(core_dir,"/image_summaries/",pipstrat,"img_summaries_3.png"), plot=r, width=8.5, height=11, units="in")
-
+>>>>>>> bd9343e3a9149d082cffe10d64f434e6dfed5901
+    
+    
   }
 }

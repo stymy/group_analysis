@@ -3,8 +3,6 @@ library(grid)
 library(gridExtra)
 library(ggplot2)
 
-core_dir <- "/Users/aimi/Code/images/"
-
 strats <- c("filt_global","filt_noglobal","nofilt_global","nofilt_noglobal")
 derivatives <- c("reho","degree_binarize","degree_weighted","eigenvector_weighted","eigenvector_binarize", "lfcd", 'vmhc', 
                  'dual_regression0', 'dual_regression1', 'dual_regression2','dual_regression3','dual_regression4', 
@@ -36,13 +34,13 @@ for (pipe in 1:length(pipes))
       print (derivs[i])
       if (derivs[i] != "empty")
       {
-
-        dir_name <- paste0(core_dir,pipstrat,"_",derivs[i])
-      } else { dir_name <- paste0(core_dir,"empty")}
-
-        dir_name <- paste0(core_dir,"images/",pipstrat,"_",derivs[i])
-      } else { dir_name <- paste0(core_dir,"empty")}
-
+<<<<<<< HEAD
+        dir_name <- paste0("/Users/aimi/Code/images/",pipstrat,"_",derivs[i])
+      } else { dir_name <- "/Users/aimi/Code/images/empty"}
+=======
+        dir_name <- paste0("/home2/aimiwat/code/group_analysis/images/",pipstrat,"_",derivs[i])
+      } else { dir_name <- "/home2/aimiwat/code/group_analysis/images/empty"}
+>>>>>>> bd9343e3a9149d082cffe10d64f434e6dfed5901
       temp_axials = c(temp_axials,paste0(dir_name,"_axial.png"))
       temp_saggitals = c(temp_saggitals,paste0(dir_name,"_saggital.png"))
     }
@@ -115,8 +113,11 @@ for (d in 1:length(derivatives))
     theme_bw()+
     blank_theme
   
-  filename = paste0(core_dir,"image_slides/by_pipeline/",derivatives[d],"_",strats[s],"_by_pipeline.png")
-
+<<<<<<< HEAD
+  filename = paste0("/Users/aimi/Code/images/image_slides/by_pipeline/",derivatives[d],"_",strats[s],"_by_pipeline.png")
+=======
+  filename = paste0("/home2/aimiwat/code/group_analysis/image_slides/by_pipeline/",derivatives[d],"_",strats[s],"_by_pipeline.png")
+>>>>>>> bd9343e3a9149d082cffe10d64f434e6dfed5901
   print(filename)
   
   png(file=filename, width=11, height=8.5, units="in", res=300)
@@ -165,8 +166,11 @@ for (d in 1:length(derivatives))
       theme_bw()+
       blank_theme
     
-    filename = paste0(core_dir,"image_slides/by_strategy/",derivatives[d],"_",pipes[p],"_by_strategy.png")
-
+<<<<<<< HEAD
+    filename = paste0("/Users/aimi/Code/images/image_slides/by_strategy/",derivatives[d],"_",pipes[p],"_by_strategy.png")
+=======
+    filename = paste0("/home2/aimiwat/code/group_analysis/image_slides/by_strategy/",derivatives[d],"_",pipes[p],"_by_strategy.png")
+>>>>>>> bd9343e3a9149d082cffe10d64f434e6dfed5901
     print(filename)
     
     png(file=filename, width=11, height=8.5, units="in", res=300)
@@ -175,6 +179,8 @@ for (d in 1:length(derivatives))
   }
 }
 
-#ggsave(filename=paste0(core_dir,"image_slides/",pipstrat,"img_slides_1.png"), plot=q, width=11, height=8.5, units="in")
-
-
+<<<<<<< HEAD
+#ggsave(filename=paste0("/User/aimi/images/image_slides/",pipstrat,"img_slides_1.png"), plot=q, width=11, height=8.5, units="in")
+=======
+#ggsave(filename=paste0("/home2/aimiwat/code/group_analysis/image_slides/",pipstrat,"img_slides_1.png"), plot=q, width=11, height=8.5, units="in")
+>>>>>>> bd9343e3a9149d082cffe10d64f434e6dfed5901

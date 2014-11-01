@@ -25,7 +25,7 @@ afni \
     -com "SWITCH_UNDERLAY MNI152_.5mm_masked_edged_tt.nii.gz" \
     -com "SWITCH_OVERLAY ${overlay}" \
     -com "SET_PBAR_ALL -99 1 Spectrum:yellow_to_cyan+gap" \
-    -com "OPEN_WINDOW axialimage mont=5x1:12 geom=1800x430" \
+    -com "OPEN_WINDOW axialimage mont=5x1:24 geom=1800x430" \
     -com "SET_XHAIRS OFF" \
     -com "SAVE_PNG axialimage ${outname}_axial.png" \
     -com "SAVE_PNG sagittalimage ${outname}_saggital.png" \

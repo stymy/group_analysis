@@ -25,6 +25,7 @@ def do_it(X,Y,X_corrected,Y_corrected,do_entropy=True):
     spearman=spearmanr(X,Y)[0]
                     
     #dice coefficient
+
     #by percentile:
     # dice = pandas.Series()
     #U = np.union1d(X,Y)

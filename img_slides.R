@@ -1,6 +1,7 @@
 library(png)
 library(grid)
 library(gridExtra)
+library(ggplot2)
 
 strats <- c("filt_global","filt_noglobal","nofilt_global","nofilt_noglobal")
 derivatives <- c("reho","degree_binarize","degree_weighted","eigenvector_weighted","eigenvector_binarize", "lfcd", 'vmhc', 
@@ -33,8 +34,8 @@ for (pipe in 1:length(pipes))
       print (derivs[i])
       if (derivs[i] != "empty")
       {
-        dir_name <- paste0("/home/rschadmin/abide/images/",pipstrat,"_",derivs[i])
-      } else { dir_name <- "/home/rschadmin/abide/images_new/empty"}
+        dir_name <- paste0("/Users/aimi/Code/images/",pipstrat,"_",derivs[i])
+      } else { dir_name <- "/Users/aimi/Code/images/empty"}
       temp_axials = c(temp_axials,paste0(dir_name,"_axial.png"))
       temp_saggitals = c(temp_saggitals,paste0(dir_name,"_saggital.png"))
     }
@@ -107,7 +108,7 @@ for (d in 1:length(derivatives))
     theme_bw()+
     blank_theme
   
-  filename = paste0("/home/rschadmin/Soft/group_analysis/image_slides/by_pipeline/",derivatives[d],"_",strats[s],"_by_pipeline.png")
+  filename = paste0("/Users/aimi/Code/images/image_slides/by_pipeline/",derivatives[d],"_",strats[s],"_by_pipeline.png")
   print(filename)
   
   png(file=filename, width=11, height=8.5, units="in", res=300)
@@ -156,7 +157,7 @@ for (d in 1:length(derivatives))
       theme_bw()+
       blank_theme
     
-    filename = paste0("/home/rschadmin/Soft/group_analysis/image_slides/by_strategy/",derivatives[d],"_",pipes[p],"_by_strategy.png")
+    filename = paste0("/Users/aimi/Code/images/image_slides/by_strategy/",derivatives[d],"_",pipes[p],"_by_strategy.png")
     print(filename)
     
     png(file=filename, width=11, height=8.5, units="in", res=300)
@@ -165,4 +166,4 @@ for (d in 1:length(derivatives))
   }
 }
 
-#ggsave(filename=paste0("/home/rschadmin/Soft/group_analysis/image_slides/",pipstrat,"img_slides_1.png"), plot=q, width=11, height=8.5, units="in")
+#ggsave(filename=paste0("/User/aimi/images/image_slides/",pipstrat,"img_slides_1.png"), plot=q, width=11, height=8.5, units="in")

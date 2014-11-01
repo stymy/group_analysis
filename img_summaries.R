@@ -1,5 +1,6 @@
 library(png)
 library(grid)
+library(ggplot2)
 
 corrs <- c("concordance","pearson","dice","entropy","spearmans")
 strats <- c("filt_global","filt_noglobal","nofilt_global","nofilt_noglobal")
@@ -30,8 +31,8 @@ for (pipe in 1:length(pipes))
       print (derivs[i])
       if (derivs[i] != "empty")
       {
-        dir_name <- paste0("/home/rschadmin/abide/images/",pipstrat,"_",derivs[i])
-      } else { dir_name <- "/home/rschadmin/abide/images_new/empty"}
+        dir_name <- paste0("/Users/aimi/Code/images/",pipstrat,"_",derivs[i])
+      } else { dir_name <- "/Users/aimi/Code/images/empty"}
       axials[i] = paste0(dir_name,"_axial.png")
       saggitals[i]=paste0(dir_name,"_saggital.png")
     }
@@ -85,7 +86,7 @@ for (pipe in 1:length(pipes))
         plot.margin = unit(c(0,0,0,0),"cm")
       )
     
-    ggsave(filename=paste0("/home/rschadmin/Soft/group_analysis/image_summaries/",pipstrat,"img_summaries_1.png"), plot=q, width=8.5, height=11, units="in")
+    ggsave(filename=paste0("/Users/aimi/Code/images/image_summaries/",pipstrat,"img_summaries_1.png"), plot=q, width=8.5, height=11, units="in")
   
     
     q <- qplot(1:40,1:40, geom="blank")+
@@ -132,7 +133,7 @@ for (pipe in 1:length(pipes))
         plot.margin = unit(c(0,0,0,0),"cm")
       )
   
-    ggsave(filename=paste0("/home/rschadmin/Soft/group_analysis/image_summaries/",pipstrat,"img_summaries_2.png"), plot=q, width=8.5, height=11, units="in")
+    ggsave(filename=paste0("/Users/aimi/Code/images/image_summaries/",pipstrat,"img_summaries_2.png"), plot=q, width=8.5, height=11, units="in")
     
      r<- qplot(1:40,1:40, geom="blank") +
       #geom_ribbon(aes(ymin=0, ymax=40), fill="black") +
@@ -158,7 +159,7 @@ for (pipe in 1:length(pipes))
         plot.margin = unit(c(0,0,0,0),"cm")
       )
     
-    ggsave(filename=paste0("/home/rschadmin/Soft/group_analysis/image_summaries/",pipstrat,"img_summaries_3.png"), plot=r, width=8.5, height=11, units="in")
+    ggsave(filename=paste0("/Users/aimi/Code/images/image_summaries/",pipstrat,"img_summaries_3.png"), plot=r, width=8.5, height=11, units="in")
     
     
   }

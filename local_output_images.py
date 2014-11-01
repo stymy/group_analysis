@@ -23,8 +23,6 @@ def do_it(pipeline, strategy, derivative):
         # plot with afni driver
         in_file = os.path.join(data_dir,"%s_%s_%s.nii.gz" %(pipeline, strategy, derivative))
         out_file = os.path.join(workingdir,"images/%s_%s_%s" %(pipeline, strategy, derivative))
-        import pdb
-        pdb.set_trace()
         subprocess.call(["sh", \
                              "group_analysis/afni_plot.bash", \
                              in_file, \
